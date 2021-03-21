@@ -9,7 +9,7 @@ import { ListComponent } from './survey-mngmt/list/list.component'
 import { UpdateComponent } from './survey-mngmt/update/update.component'
 
 const routes: Routes = [
- {path: 'home', component: HomeComponent, data: {title: 'Home'}},
+ {path: 'home', component: HomeComponent, data: {title: 'Survey Builder'}},
  {path: 'about', component: AboutComponent, data: {title: 'About'}},
  { path: 'surveys/available', component: AvailableComponent },
  { path: 'surveys/list', component: ListComponent },
