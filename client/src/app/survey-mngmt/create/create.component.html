@@ -1,0 +1,64 @@
+<div class="container ">
+    <div class="surveyFormContainer">
+        <div class="col-md-offset-3 col-md-10">
+            <h1 class="display-4">Survey Creation</h1>
+        </div>
+            <div *ngIf='createdSurvey' class="m-2 text-center">
+              <h2>Survey Created!</h2>
+              <button class="btn btn-primary" (click)='availableSurveys()'>Return to Surveys</button>
+            </div>
+        <form class="surveyForm" novalidate class="m-2" (ngSubmit)='onSubmit()' [formGroup]="surveyForm">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input class="form-control" name='title' formControlName="title" required>
+            </div>
+            <div class="form-group">
+                <label for="Expiration Date">Expiration Date</label>
+                <input class="form-control" type="datetime-local" name="expiration_dte" formControlName="expiration_dte" required>
+            </div>
+            <table class="table" formArrayName="questions">
+                <tr>
+                  <th colspan="2">Questions:</th>
+                  <th width="150px">
+                      <button type="button" class="btn btn-success m-1" (click)='addQuestion()'>Add Question</button>
+                    </th>
+                </tr>
+                <tr *ngFor="let question of questions().controls; let qIndex=index" [formGroupName]="qIndex">
+                  <td>
+                      Text :
+                      <input type="text" formControlName="text" class="form-control">
+                  </td>
+                  <td>
+                      Type:
+                      <select class="form-control" formControlName="type" name="type">
+                        <option selected value="MCQ">Multiple Choise Question</option>
+                        <option value="TRUEFALSE">True/False</option>
+                        <option value="SHORTANSWER">Short Answer</option>
+                      </select>
+                  </td>
+                  <td>
+                    <br><button type="button" class="btn btn-dark m-1" (click)='addAnswerToQuestion(qIndex)'>Add Answer</button>
+                  </td>
+                  <td>
+                    <div formArrayName="answers">
+                        <div *ngFor="let answer of answers(qIndex).controls; let aIndex=index">
+                            <div [formGroupName]="aIndex">
+                                Answer :
+                                <input type="text" formControlName="text" class="form-control">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" formControlName="isCorrect">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Is Answer correct?</label>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                  </td>
+                </tr>
+              </table>
+            <div class="text-left">
+              <button class="btn btn-secondary m-1" (click)='availableSurveys()'>Back</button>
+              <button class="btn btn-primary m-1" type="submit">Create Survey</button>
+            </div>
+        </form>
+    </div>
+</div>
