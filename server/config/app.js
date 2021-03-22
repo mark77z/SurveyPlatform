@@ -94,7 +94,7 @@ passport.use(strategy);
 
 // routing
 app.use('/users', usersRouter);
-app.use('/apsurveys', surveyRouter);
+app.use('/api/surveys', surveyRouter);
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../public/index.html'));
 });

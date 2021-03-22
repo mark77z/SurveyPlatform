@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Survey } from './survey.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-const PROTOCOL = 'https';
+const PROTOCOL = 'http';
 const PORT = 3500;
 
 @Injectable({
