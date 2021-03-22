@@ -5,3 +5,11 @@ body{
     font-weight: 300;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+.home{
+    display: grid;
+    height: 110vh;
+    color: cornsilk;
+    min-height: 50px;
+    font-family: 'Ubuntu',sans-serif;
+}
