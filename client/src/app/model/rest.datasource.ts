@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Survey } from './survey.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-const PROTOCOL = 'http';
+const PROTOCOL = 'https';
 const PORT = 3500;
 
 @Injectable({
@@ -26,7 +26,8 @@ export class RestDataSource
 
   constructor(private http: HttpClient, private jwtService: JwtHelperService)
   {
-    this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/`;
+    //this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
+    this.baseUrl = `https://survey-platform-comp229.herokuapp.com/api/`
   }
 
   getSurveys(): Observable<Survey[]>
