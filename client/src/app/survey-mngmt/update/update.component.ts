@@ -63,9 +63,9 @@ export class UpdateComponent implements OnInit {
 
   ngOnInit(): void {}
   
-  availableSurveys(): void
+  surveyList(): void
   {
-    this.router.navigateByUrl('/surveys/available');
+    this.router.navigateByUrl('/surveys/list');
   }
 
   onSubmit(): void
@@ -73,7 +73,7 @@ export class UpdateComponent implements OnInit {
     console.log(this.surveyEditForm.value);
     this.repository.updateSurvey(this.surveyId, this.surveyEditForm.value).subscribe(survey => {
       alert('Quiz edited successfully');
-      this.router.navigate(['/surveys/available'])
+      this.router.navigate(['/surveys/list'])
       .then(() => {
         window.location.reload();
       });

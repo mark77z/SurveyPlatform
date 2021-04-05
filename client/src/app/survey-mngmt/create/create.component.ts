@@ -59,9 +59,9 @@ export class CreateComponent {
     this.questions().push(this.newQuestion());
   }
 
-  availableSurveys(): void
+  surveyList(): void
   {
-    this.router.navigateByUrl('/surveys/available');
+    this.router.navigateByUrl('/surveys/list');
   }
 
   onSubmit(): void
@@ -69,7 +69,7 @@ export class CreateComponent {
     console.log(this.surveyForm.value);
     this.repository.createSurvey(this.surveyForm.value).subscribe(survey => {
       alert('Quiz created successfully');
-      this.router.navigate(['/surveys/available'])
+      this.router.navigate(['/surveys/list'])
       .then(() => {
         window.location.reload();
       });

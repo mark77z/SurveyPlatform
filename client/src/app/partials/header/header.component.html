@@ -7,20 +7,29 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
-
       <li class="nav-item">
         <a class="nav-link" href="/home"><i class="fas fa-lg fa-home"></i> Home</a>
       </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About </a>
+      <li class="nav-item">
+        <a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About </a>
+      </li>
+      <li class="nav-item" *ngIf='!isLoggedIn()'>
+        <a class="nav-link" href="/surveys/available"><i class="fas fa-poll-h"></i> Available Surveys </a>
+      </li>
+      <li class="nav-item" *ngIf='isLoggedIn()'>
+        <a class="nav-link" href="/surveys/list"><i class="fas fa-poll-h"></i> Surveys </a>
+      </li>
+      <li *ngIf='isLoggedIn()'
+            class="navbar-text text-success ml-5 mr-5 d-none d-lg-inline">
+            <i class="fas fa-lg fa-user"></i> Welcome, {{ user.displayName }}
         </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="/surveys/available"><i class="fas fa-poll-h"></i> Surveys </a>
-        </li>
-
+      <li *ngIf='isLoggedIn()' class="nav-item">
+        <a (click)='onLogoutClick()' routerLink='/logout' class="nav-link" href="/login">
+          <i class="fas fa-lg fa-sign-out-alt"></i> Logout </a>
+      </li>
+      <li *ngIf='!isLoggedIn()' class="nav-item">
+        <a class="nav-link" routerLink="/login"><i class="fas fa-lg fa-sign-in-alt"></i> Login </a>
+      </li>
     </ul>
-
   </div>
 </nav>

@@ -10,3 +10,7 @@ html, body {
     background-attachment: scroll;
     background-size: cover;
   }
+
+.register-form{
+  padding-bottom: 7%;
+}

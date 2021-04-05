@@ -22,15 +22,15 @@ function requireAuth(req, res, next)
 router.get('/list', surveyController.displaySurveyList);
 
 /* POST Route for processing survey creation - CREATE Operation */
-router.post('/create', surveyController.createSurvey);
+router.post('/create', passport.authenticate('jwt', {session: false}), surveyController.createSurvey);
 
 /* GET Route for getting survey - UPDATE Operation */
 router.get('/get/:id', surveyController.getSurveyById);
 
 /* POST Route for processing survey edition - UPDATE Operation */
-router.post('/update/:id', surveyController.performUpdate);
+router.post('/update/:id', passport.authenticate('jwt', {session: false}), surveyController.performUpdate);
 
 /* GET to perform  Deletion - DELETE Operation */
-router.get('/delete/:id', surveyController.performDelete);
+router.get('/delete/:id', passport.authenticate('jwt', {session: false}), surveyController.performDelete);
 
 module.exports = router;

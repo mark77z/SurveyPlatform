@@ -59,8 +59,7 @@ module.exports.processLoginPage = (req, res, next) => {
         // is there a user login error?
         if(!user)
         {
-            req.flash('loginMessage', 'Authentication Error');
-            return res.redirect('/login');
+            return res.json({success: false, msg: 'Authentication error'});
         }
         req.login(user, (err) => {
             // server error?
@@ -72,7 +71,7 @@ module.exports.processLoginPage = (req, res, next) => {
             const payload = 
             {
                 id: user._id,
-                displayName: user.displayName,
+                displayName: user.name,
                 username: user.username,
                 email: user.email
             }
@@ -83,7 +82,7 @@ module.exports.processLoginPage = (req, res, next) => {
             
             return res.json({success: true, msg: 'User Logged in Successfully!', user: {
                 id: user._id,
-                displayName: user.displayName,
+                displayName: user.name,
                 username: user.username,
                 email: user.email
             }, token: authToken});
@@ -114,9 +113,11 @@ module.exports.processRegisterPage = (req, res, next) => {
     // instantiate a user object
     let newUser = new User({
         username: req.body.username,
-        //password: req.body.password
+        //password = req.body.password,
+        name: req.body.name,
         email: req.body.email,
-        displayName: req.body.displayName
+        phone : req.body.phone,
+        address : req.body.address
     });
 
     User.register(newUser, req.body.password, (err) => {
@@ -140,17 +141,9 @@ module.exports.processRegisterPage = (req, res, next) => {
         }
         else
         {
-            // if no error exists, then registration is successful
-
-            // redirect the user and authenticate them
-
-            return res.json({success: true, msg: 'User Registered Successfully!'});
-
-            /*
             return passport.authenticate('local')(req, res, () => {
-                res.redirect('/book-list')
+                res.json({success: true, msg: 'User Registered Successfully!'});
             });
-            */
         }
     });
 }

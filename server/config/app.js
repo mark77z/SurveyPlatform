@@ -33,6 +33,7 @@ mongoDB.once('open', ()=>{
 
 let usersRouter = require('../routes/users');
 let surveyRouter = require('../routes/survey');
+let indexRouter = require('../routes/index');
 
 let app = express();
 
@@ -93,6 +94,7 @@ let strategy = new JWTStrategy(jwtOptions, (jwt_payload, done) => {
 passport.use(strategy);
 
 // routing
+app.use('/api', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/surveys', surveyRouter);
 app.get('*', (req, res) => {
