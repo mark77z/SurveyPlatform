@@ -70,9 +70,9 @@ export class RestDataSource
     this.user = user;
   }
 
-  registerUser(user: User): Observable<User>
+  registerUser(user: User): Observable<any>
   {
-    return this.http.post<User>(this.baseUrl + 'register', user);
+    return this.http.post<User>(this.baseUrl + 'register', user, this.httpOptions);
   }
 
   authenticate(user: User): Observable<any>

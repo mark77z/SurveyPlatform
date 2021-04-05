@@ -42,6 +42,7 @@ module.exports.createSurvey = (req, res, next) => {
     newSurvey.expiration_dte = req.body.expiration_dte;
     newSurvey.questions = req.body.questions;
     newSurvey.questions.answers = req.body.questions.answers;
+    newSurvey.userId = req.body.userId;
 
     // Add new Order Object to the Database
     Survey.create(newSurvey, (err, Survey) => {

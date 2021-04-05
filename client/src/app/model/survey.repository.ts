@@ -33,6 +33,11 @@ export class SurveyRepository
     return this.surveys.filter(s => new Date(s.expiration_dte) >= currentDate);
   }
 
+  getSurveysByUserName(username: string): Survey[]
+  {
+    return this.surveys.filter(s => s.userId === username);
+  }
+
   createSurvey(survey: Survey): Observable<Survey>
   {
     return this.dataSource.createSurvey(survey);

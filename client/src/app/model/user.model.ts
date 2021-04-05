@@ -3,5 +3,7 @@ export class User
   username: string;
   password: string;
   email: string;
-  displayName: string;
+  name: string;
+  address: string;
+  phone: string;
 }

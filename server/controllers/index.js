@@ -92,23 +92,6 @@ module.exports.processLoginPage = (req, res, next) => {
     })(req, res, next);
 }
 
-module.exports.displayRegisterPage = (req, res, next) => {
-    // check if the user is not already logged in
-    if(!req.user)
-    {
-        res.render('auth/register',
-        {
-            title: 'Register',
-            messages: req.flash('registerMessage'),
-            displayName: req.user ? req.user.displayName : ''
-        });
-    }
-    else
-    {
-        return res.redirect('/');
-    }
-}
-
 module.exports.processRegisterPage = (req, res, next) => {
     // instantiate a user object
     let newUser = new User({
@@ -123,27 +106,34 @@ module.exports.processRegisterPage = (req, res, next) => {
     User.register(newUser, req.body.password, (err) => {
         if(err)
         {
-            console.log("Error: Inserting New User");
             if(err.name == "UserExistsError")
             {
                 req.flash(
                     'registerMessage',
                     'Registration Error: User Already Exists!'
                 );
-                console.log('Error: User Already Exists!')
             }
-            return res.render('auth/register',
-            {
-                title: 'Register',
-                messages: req.flash('registerMessage'),
-                displayName: req.user ? req.user.displayName : ''
-            });
+            return res.json({success: false, msg: 'An error ocurred registering the user', error: err});
         }
         else
         {
-            return passport.authenticate('local')(req, res, () => {
-                res.json({success: true, msg: 'User Registered Successfully!'});
+            const payload = 
+            {
+                displayName: newUser.name,
+                username: newUser.username,
+                email: newUser.email
+            }
+
+            const authToken = jwt.sign(payload, DB.Secret, {
+                expiresIn: 604800 // 1 week
             });
+            
+            return res.json({success: true, msg: 'User Created Successfully!', user: {
+                id: newUser._id,
+                displayName: newUser.name,
+                username: newUser.username,
+                email: newUser.email
+            }, token: authToken});
         }
     });
 }

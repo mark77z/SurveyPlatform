@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { SurveyRepository } from '../../model/survey.repository';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
+import { User } from 'src/app/model/user.model';
+import { AuthService } from 'src/app/model/auth.service';
 
 @Component({
   selector: 'app-create',
@@ -12,10 +14,18 @@ export class CreateComponent {
   submitted = false;
   createdSurvey = false;
   surveyForm: FormGroup;
+  user: User;
 
-  constructor(private fb:FormBuilder, private router: Router, private repository: SurveyRepository)
+  constructor(private fb:FormBuilder, private router: Router, private repository: SurveyRepository, private authService: AuthService)
   { 
+    const result = this.authService.authenticated;
+    if (result)
+    {
+      this.user = JSON.parse(localStorage.getItem('user'));
+    }
+
     this.surveyForm = this.fb.group({
+      userId: this.user.username,
       title: '',
       expiration_dte: new Date(),
       questions: this.fb.array([])

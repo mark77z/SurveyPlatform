@@ -15,7 +15,7 @@ export class UserRepository
     //TODO
   }
 
-  registerUser(user: User): Observable<User>
+  registerUser(user: User): Observable<any>
   {
     return this.dataSource.registerUser(user);
   }
