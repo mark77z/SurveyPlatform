@@ -1,16 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
-html, body {
+html,
+body {
     margin: 0;
     height: auto;
     min-height: 100%;
-    background-color: #74EBD5;
-    background-image: linear-gradient(240deg, #74EBD5 0%, #9FACE6 100%);
+    background: #4CA1AF;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #C4E0E5, #4CA1AF);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #C4E0E5, #4CA1AF);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: scroll;
     background-size: cover;
-  }
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
 
-.register-form{
-  padding-bottom: 7%;
+.transparent8 {
+    opacity: 0.8;
+}
+
+.transparent85 {
+    opacity: 0.85;
+}
+
+.transparent9 {
+    opacity: 0.9;
+}
+
+.register-form {
+    padding-bottom: 7%;
 }

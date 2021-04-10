@@ -4,6 +4,7 @@ import { SurveyRepository } from '../../model/survey.repository';
 import { Survey } from 'src/app/model/survey.model';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-update',
@@ -17,8 +18,7 @@ export class UpdateComponent implements OnInit {
   private sub: any;
   surveyEditForm: FormGroup;
 
-  constructor(private router: Router, private fb:FormBuilder, private route: ActivatedRoute, private repository: SurveyRepository)
-  {
+  constructor(private router: Router, private fb: FormBuilder, private route: ActivatedRoute, private repository: SurveyRepository) {
     this.sub = this.route.params.subscribe(params => {
       this.surveyId = params['surveyId'];
       this.surveyToEdit = this.repository.getSurvey(this.surveyId);
@@ -26,6 +26,7 @@ export class UpdateComponent implements OnInit {
 
     this.surveyEditForm = this.fb.group({
       title: this.surveyToEdit.title,
+      userId: this.surveyToEdit.userId,
       expiration_dte: new FormControl(new Date(this.surveyToEdit.expiration_dte).toISOString().slice(0, -1)),
       questions: this.fb.array([])
     });
@@ -33,50 +34,60 @@ export class UpdateComponent implements OnInit {
     let questionsControl = <FormArray>this.surveyEditForm.controls.questions;
     this.surveyToEdit.questions.forEach(question => {
       questionsControl.push(this.fb.group({
-          text: question.text,
-          type: question.type,
-          answers: this.setAnswers(question.answers)
+        text: question.text,
+        type: question.type,
+        answers: this.setAnswers(question.answers)
       }))
     });
   }
 
-  questions() : FormArray
-  {
+  questions(): FormArray {
     return this.surveyEditForm.get("questions") as FormArray
   }
 
-  answers(qIndex: number) : FormArray
-  {
+  answers(qIndex: number): FormArray {
     return this.questions().at(qIndex).get("answers") as FormArray
   }
 
-  setAnswers(data){
+  setAnswers(data) {
     let answersArr = new FormArray([])
     data.forEach(a => {
-      answersArr.push(this.fb.group({ 
+      answersArr.push(this.fb.group({
         text: a.text,
-        isCorrect: a.isCorrect 
+        isCorrect: a.isCorrect
       }))
     })
     return answersArr;
   }
 
-  ngOnInit(): void {}
-  
-  surveyList(): void
-  {
+  ngOnInit(): void { }
+
+  surveyList(): void {
     this.router.navigateByUrl('/surveys/list');
   }
 
-  onSubmit(): void
-  {
+  onSubmit(): void {
     console.log(this.surveyEditForm.value);
-    this.repository.updateSurvey(this.surveyId, this.surveyEditForm.value).subscribe(survey => {
-      alert('Quiz edited successfully');
-      this.router.navigate(['/surveys/list'])
-      .then(() => {
-        window.location.reload();
-      });
+    this.repository.updateSurvey(this.surveyId, this.surveyEditForm.value).subscribe(data => {
+      if (data.success) {
+
+        Swal.fire(
+          'Survey Update',
+          'The survey has been updated successfully',
+          'success'
+        );
+
+        this.router.navigate(['/surveys/list'])
+          .then(() => {
+            window.location.reload();
+          });
+      } else {
+        Swal.fire(
+          'Survey Update',
+          'An error ocurred while updating survey. Please try again later.',
+          'error'
+        );
+      }
     });
   }
 

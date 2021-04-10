@@ -1,0 +1,62 @@
+.home-container {
+    padding-bottom: 5%;
+}
+
+h1 {
+    margin-top: 5%;
+}
+
+.boxes-container {
+    position: absolute;
+    padding-top: 3%;
+    top: 60%;
+}
+
+.service-box {
+    background-color: #fff;
+    padding: 2.5rem 1.3rem;
+    border-radius: 1rem;
+    margin-bottom: 3rem;
+    opacity: 0.85;
+}
+
+.service-box:hover #service-icon {
+    transition: all 500ms ease;
+    color: #fff;
+    background-color: #0078ff;
+    box-shadow: 0 0 0 10px #cde1f8;
+}
+
+.service-box .service-ico {
+    margin-bottom: 1rem;
+    color: #1e1e1e;
+    font-size: 4rem;
+}
+
+.service-box .ico-circle {
+    transition: all 500ms ease;
+    font-size: 4rem;
+    display: flex;
+    justify-content: center;
+}
+
+.service-box .s-title {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    text-align: center;
+    padding: .4rem 0;
+}
+
+.service-box .s-description {
+    color: #4e4e4e;
+}
+
+.services {
+    background-color: #74EBD5;
+    background-image: linear-gradient(240deg, #74EBD5 0%, #9FACE6 100%);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: scroll;
+    background-size: cover;
+    padding-bottom: 2%;
+}

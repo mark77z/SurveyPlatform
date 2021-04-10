@@ -6,6 +6,7 @@ import { PagesModule } from './pages/pages.module';
 import { RouterModule } from '@angular/router';
 import { SurveyMngmtModule } from './survey-mngmt/survey-mngmt.module';
 import { JwtModule, JwtHelperService, JwtInterceptor } from '@auth0/angular-jwt';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 export function jwtTokenGetter(): string
 {
@@ -22,6 +23,7 @@ export function jwtTokenGetter(): string
     AppRoutingModule,
     PagesModule,
     SurveyMngmtModule,
+    MDBBootstrapModule.forRoot(),
 
     JwtModule.forRoot({
       config: {

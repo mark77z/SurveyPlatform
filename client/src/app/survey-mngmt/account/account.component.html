@@ -1,0 +1,54 @@
+<main class="container account-container">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card transparent85">
+                <div class="card-header">
+                    <h2>Profile settings</h2>
+                </div>
+                <div class="bg-danger mt-2 p-2 text-center text-white" *ngIf='errorMessage != null'>
+                    {{ errorMessage }}
+                </div>
+                <div class="card-body">
+                    <form autocomplete='off' #form='ngForm' (ngSubmit)='updateProfile(form)'>
+                        <input type="hidden" name="_id" [(ngModel)]='user._id'>
+                        <fieldset class="form-group">
+                            <label for="username">Username: </label>
+                            <input type="text" class="form-control" name="username" [(ngModel)]='user.username' placeholder="Enter username" id="username" disabled required autofocus>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <label for="name">Name: </label>
+                            <input type="text" class="form-control" name="name" [(ngModel)]='user.name' placeholder="Enter Name" id="name" required>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <label for="email">Email: </label>
+                            <input type="text" class="form-control" name="email" [(ngModel)]='user.email' placeholder="Enter Email Address" id="email" required>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <label for="phone">Phone number: </label>
+                            <input type="text" class="form-control" name="phone" [(ngModel)]='user.phone' placeholder="Enter Phone Number" id="phone" required>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <label for="address">Address: </label>
+                            <input type="text" class="form-control" name="address" [(ngModel)]='user.address' placeholder="Enter Address" id="address" required>
+                        </fieldset>
+
+                        <fieldset class="form-group text-right">
+                            <button class='btn btn-primary m-1' type='submit'>
+                              <i class="fas fa-user-edit"></i>
+                              Update
+                            </button>
+                            <button class='btn btn-secondary m-1' routerLink='/surveys/list'>
+                              <i class="fas fa-undo"></i>
+                              Cancel
+                            </button>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

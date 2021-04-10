@@ -30,8 +30,8 @@ export class RestDataSource
 
   constructor(private http: HttpClient, private jwtService: JwtHelperService)
   {
-    //this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
-    this.baseUrl = `https://survey-platform-comp229.herokuapp.com/api/`
+    this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
+    //this.baseUrl = `https://survey-platform-comp229.herokuapp.com/api/`
   }
 
   getSurveys(): Observable<Survey[]>
@@ -39,7 +39,7 @@ export class RestDataSource
     return this.http.get<Survey[]>(this.baseUrl + 'surveys/list');
   }
 
-  createSurvey(survey: Survey): Observable<Survey>
+  createSurvey(survey: Survey): Observable<any>
   {
     this.loadToken();
     return this.http.post<Survey>(this.baseUrl + 'surveys/create', survey, this.httpOptions);
@@ -50,7 +50,7 @@ export class RestDataSource
     return this.http.get<Survey>(this.baseUrl + 'surveys/get/' + id);
   }
 
-  updateSurvey(id: string, survey: Survey): Observable<Survey>
+  updateSurvey(id: string, survey: Survey): Observable<any>
   {
     this.loadToken();
     return this.http.post<Survey>(this.baseUrl + 'surveys/update/' + id, survey, this.httpOptions);
@@ -60,6 +60,83 @@ export class RestDataSource
   {
     this.loadToken();
     return this.http.get<Survey>(this.baseUrl + 'surveys/delete/' + id, this.httpOptions);
+  }
+
+  answerSurvey(response: any, surveyId: string): Observable<any>
+  {
+    return this.http.post<Survey>(this.baseUrl + 'surveys/response/' + surveyId, response, this.httpOptions);
+  }
+
+  getUserCreatedSurveys(userId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/count/forUser/' + userId, this.httpOptions);
+  }
+
+  getUserCreatedSurveysAnswers(userId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/creator/' + userId, this.httpOptions);
+  }
+
+  getSurveysAnsweredPerSurvey(surveyId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/survey/' + surveyId, this.httpOptions);
+  }
+
+  getSurveysCorrectAnswersForCreator(userId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/correct/creator/' + userId, this.httpOptions);
+  }
+
+  getSurveysCorrectAnswersForSurvey(surveyId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/correct/survey/' + surveyId, this.httpOptions);
+  }
+
+  getSurveysTotaltAnswersForCreator(userId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/total/creator/' + userId, this.httpOptions);
+  }
+
+  getGeneralGenderStats(userId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/gender/creator/' + userId, this.httpOptions);
+  }
+
+  getGenderStatsBySurvey(surveyId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/gender/survey/' + surveyId, this.httpOptions);
+  }
+  
+  getAgeStatsBySurvey(surveyId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/age/survey/' + surveyId, this.httpOptions);
+  }
+
+  getGeneralAgeStats(userId: string): Observable<any>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'surveys/get/answered/age/creator/' + userId, this.httpOptions);
+  }
+
+  getUserByUsername(username: string): Observable<User>
+  {
+    this.loadToken();
+    return this.http.get<any>(this.baseUrl + 'users/get/' + username, this.httpOptions);
+  }
+
+  updateUser(username: string, user: User): Observable<any>
+  {
+    this.loadToken();
+    return this.http.post<User>(this.baseUrl + 'users/update/' + username, user, this.httpOptions);
   }
 
   storeUserData(token: any, user: User): void

@@ -21,6 +21,7 @@ export class Survey
 export class Question
 {
   constructor(
+    public _id: string,
     public type: string,
     public text: string,
     public answers: Answer[] = []
@@ -30,6 +31,7 @@ export class Question
 export class Answer
 {
   constructor(
+    public _id: string,
     public text: string,
     public isCorrect: boolean
   ){}

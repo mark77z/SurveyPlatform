@@ -1,0 +1,101 @@
+<div class="container survey-container">
+    <div class="page-header">
+        <div class="section-title">
+            <h1 class="display-4">{{ survey.title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container">
+            <form class="surveyEditForm" novalidate class="m-2" [formGroup]="surveyForm" (ngSubmit)='onSubmit()'>
+                <input type="hidden" formControlName="surveyId">
+                <div class="card bg-light mb-3 transparent85 border-dark">
+                    <h5 class="card-header">Personal Info</h5>
+                    <div class="card-body">
+                        Gender:
+                        <br>
+                        <div class="btn-group">
+                            <label class="btn btn-light btn-outline-dark">
+                                <input type="radio" formControlName="gender" value="male"> Male
+                            </label>
+                            <label class="btn btn-light btn-outline-dark">
+                                <input type="radio" formControlName="gender" value="female"> Female
+                            </label>
+                        </div>
+
+                        <br>
+                        <br> Age Group:
+                        <br>
+                        <div class="btn-group">
+                            <label class="btn btn-light btn-outline-dark">
+                                <input type="radio" formControlName="age" value="Under 18"> Under 18
+                            </label>
+                            <label class="btn btn-light btn-outline-dark">
+                                <input type="radio" formControlName="age" value="18-25"> 18-25
+                            </label>
+                            <label class="btn btn-light btn-outline-dark">
+                                <input type="radio" formControlName="age" value="25-50"> 25-50
+                            </label>
+                            <label class="btn btn-light btn-outline-dark">
+                                <input type="radio" formControlName="age" value="Over 50"> Over 50
+                            </label>
+                        </div>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+                <div formArrayName="questions">
+                    <div class="card bg-light mb-3 transparent85 border-dark" *ngFor="let question of questions().controls; let qIndex=index" [formGroupName]="qIndex">
+                        <h5 class="card-header">{{question.get("text").value}}</h5>
+                        <input type="hidden" formControlName="_id">
+                        <div class="card-body">
+                            <ng-container *ngIf="question.get('type').value === 'MCQ';  then MCQ; else (question.get('type').value === 'TRUEFALSE' && TRUEFALSE) || (question.get('type').value === 'SHORTANSWER' && SHORTANSWER)">
+                            </ng-container>
+                            <ng-template #MCQ>
+                                <div formArrayName="answers">
+                                    <div class="btn-group-vertical">
+                                        <label class="btn btn-light btn-vertical btn-outline-dark" *ngFor="let answer of answers(qIndex).controls; let aIndex=index">
+                                            <div [formGroupName]="aIndex" class="form-check">
+                                                <input type="checkbox" formControlName="ans"> {{answer.get("text").value}}
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template #TRUEFALSE>
+                                <div formArrayName="answers">
+                                    <div class="btn-group">
+                                        <label class="btn btn-light btn-outline-dark" *ngFor="let answer of answers(qIndex).controls; let aIndex=index">
+                                            <div [formGroupName]="aIndex" class="tfcontainer">
+                                                <input type="checkbox" formControlName="ans" id="ck{{qIndex}}{{aIndex}}" (change)="onCkTrueFalseChange($event, qIndex, aIndex)"> {{answer.get("text").value}}
+                                                <span class="checkmark"></span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template #SHORTANSWER>
+                                <div formArrayName="answers">
+                                    <div *ngFor="let answer of answers(qIndex).controls; let aIndex=index">
+                                        <div [formGroupName]="aIndex" class="form-group">
+                                            <textarea class="form-control" rows="3" formControlName="ans"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+                <fieldset class="form-group text-left">
+                    <button class="btn btn-primary m-1" type="submit">
+                      <i class="far fa-paper-plane"></i>
+                      Submit
+                    </button>
+                    <button class="btn btn-secondary m-1" routerLink="/surveys/available">
+                      <i class="fas fa-undo"></i>
+                      Cancel
+                    </button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

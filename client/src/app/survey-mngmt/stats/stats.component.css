@@ -1,0 +1,34 @@
+.stats-container {
+    padding-bottom: 10%;
+}
+
+.charts-container {
+    position: absolute;
+    top: 1%;
+    right: 0;
+}
+
+.survey-chart {
+    height: 300px;
+    width: 300px;
+}
+
+.charts-table {
+    width: 100%;
+}
+
+.section-title h1::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #34b7a7;
+    bottom: 0;
+}
+
+.section-title h1 {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    position: relative;
+}

@@ -1,35 +1,39 @@
 <!-- Main Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/"><img src="../../../assets/images/logo.png" alt="" width="70" height="70"></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-light transparent9">
+    <a class="navbar-brand" href="/"><img src="../../../assets/images/logo.png" alt="" width="55" height="55"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/home"><i class="fas fa-lg fa-home"></i> Home</a>
-      </li>
-      <li class="nav-item">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/home"><i class="fas fa-lg fa-home"></i> Home</a>
+            </li>
+            <!--<li *ngIf='!isLoggedIn()' class="nav-item">
         <a class="nav-link" href="/about"><i class="fas fa-info-circle"></i> About </a>
-      </li>
-      <li class="nav-item" *ngIf='!isLoggedIn()'>
-        <a class="nav-link" href="/surveys/available"><i class="fas fa-poll-h"></i> Available Surveys </a>
-      </li>
-      <li class="nav-item" *ngIf='isLoggedIn()'>
-        <a class="nav-link" href="/surveys/list"><i class="fas fa-poll-h"></i> Surveys </a>
-      </li>
-      <li *ngIf='isLoggedIn()'
-            class="navbar-text text-success ml-5 mr-5 d-none d-lg-inline">
-            <i class="fas fa-lg fa-user"></i> Welcome, {{ user.username }}
-        </li>
-      <li *ngIf='isLoggedIn()' class="nav-item">
-        <a (click)='onLogoutClick()' routerLink='/logout' class="nav-link" href="/login">
-          <i class="fas fa-lg fa-sign-out-alt"></i> Logout </a>
-      </li>
-      <li *ngIf='!isLoggedIn()' class="nav-item">
-        <a class="nav-link" routerLink="/login"><i class="fas fa-lg fa-sign-in-alt"></i> Login </a>
-      </li>
-    </ul>
-  </div>
+      </li>-->
+            <li class="nav-item" *ngIf='!isLoggedIn()'>
+                <a class="nav-link" href="/surveys/available"><i class="fas fa-poll-h"></i> Available Surveys </a>
+            </li>
+            <li class="nav-item" *ngIf='isLoggedIn()'>
+                <a class="nav-link" href="/surveys/list"><i class="fas fa-poll-h"></i> Surveys </a>
+            </li>
+            <li class="nav-item" *ngIf='isLoggedIn()'>
+                <a class="nav-link" href="/surveys/stats"><i class="fas fa-chart-bar"></i> Stats </a>
+            </li>
+            <li *ngIf='isLoggedIn()' class="navbar-text text-success d-none d-lg-inline">
+                <a routerLink='/account/{{user.username}}' class="text-primary nav-link d-none d-lg-inline">
+                    <i class="fas fa-lg fa-user"></i> Welcome, {{ user.username }}
+                </a>
+            </li>
+            <li *ngIf='isLoggedIn()' class="nav-item">
+                <a (click)='onLogoutClick()' routerLink='/logout' class="nav-link" href="/login">
+                    <i class="fas fa-lg fa-sign-out-alt"></i> Logout </a>
+            </li>
+            <li *ngIf='!isLoggedIn()' class="nav-item">
+                <a class="nav-link" routerLink="/login"><i class="fas fa-lg fa-sign-in-alt"></i> Login </a>
+            </li>
+        </ul>
+    </div>
 </nav>

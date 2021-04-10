@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms'
 import { User } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/model/auth.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-create',
@@ -16,11 +17,9 @@ export class CreateComponent {
   surveyForm: FormGroup;
   user: User;
 
-  constructor(private fb:FormBuilder, private router: Router, private repository: SurveyRepository, private authService: AuthService)
-  { 
+  constructor(private fb: FormBuilder, private router: Router, private repository: SurveyRepository, private authService: AuthService) {
     const result = this.authService.authenticated;
-    if (result)
-    {
+    if (result) {
       this.user = JSON.parse(localStorage.getItem('user'));
     }
 
@@ -32,31 +31,26 @@ export class CreateComponent {
     });
   }
 
-  questions() : FormArray
-  {
+  questions(): FormArray {
     return this.surveyForm.get("questions") as FormArray
   }
 
-  answers(qIndex: number) : FormArray
-  {
+  answers(qIndex: number): FormArray {
     return this.questions().at(qIndex).get("answers") as FormArray
   }
 
-  newAnswerToQuestion(): FormGroup
-  {
+  newAnswerToQuestion(): FormGroup {
     return this.fb.group({
       text: '',
       isCorrect: false,
     })
   }
 
-  addAnswerToQuestion(qIndex:number)
-  {
+  addAnswerToQuestion(qIndex: number) {
     this.answers(qIndex).push(this.newAnswerToQuestion());
   }
 
-  newQuestion(): FormGroup
-  {
+  newQuestion(): FormGroup {
     return this.fb.group({
       type: '',
       text: '',
@@ -64,25 +58,35 @@ export class CreateComponent {
     })
   }
 
-  addQuestion()
-  {
+  addQuestion() {
     this.questions().push(this.newQuestion());
   }
 
-  surveyList(): void
-  {
+  surveyList(): void {
     this.router.navigateByUrl('/surveys/list');
   }
 
-  onSubmit(): void
-  {
+  onSubmit(): void {
     console.log(this.surveyForm.value);
-    this.repository.createSurvey(this.surveyForm.value).subscribe(survey => {
-      alert('Quiz created successfully');
-      this.router.navigate(['/surveys/list'])
-      .then(() => {
-        window.location.reload();
-      });
+    this.repository.createSurvey(this.surveyForm.value).subscribe(data => {
+      if (data.success) {
+        Swal.fire(
+          'Survey Creation',
+          'The survey has been created successfully',
+          'success'
+        );
+
+        this.router.navigate(['/surveys/list'])
+          .then(() => {
+            window.location.reload();
+          });
+      } else {
+        Swal.fire(
+          'Survey Creation',
+          'An error ocurred while creating survey. Please try again later.',
+          'error'
+        );
+      }
     });
   }
 }

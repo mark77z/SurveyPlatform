@@ -15,8 +15,7 @@ let questionchema = mongoose.Schema({
 let surveyModel = mongoose.Schema({
     title: String,
     userId: {
-        type: String,
-        default: 'admin'
+        type: String
     },
     created_dte: {
         type: Date,
@@ -30,9 +29,8 @@ let surveyModel = mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    questions: [questionchema] 
-},
-{
+    questions: [questionchema]
+}, {
     collection: "surveys"
 });
 

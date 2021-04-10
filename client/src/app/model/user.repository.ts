@@ -19,4 +19,14 @@ export class UserRepository
   {
     return this.dataSource.registerUser(user);
   }
+
+  getUserByUsername(username: string): Observable<User>
+  {
+    return this.dataSource.getUserByUsername(username);
+  }
+
+  updateUser(username: string, user: User): Observable<any>
+  {
+    return this.dataSource.updateUser(username, user);
+  }
 }

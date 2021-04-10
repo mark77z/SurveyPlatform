@@ -4,9 +4,11 @@ import { Router } from '@angular/router';
 import { UserRepository } from '../../model/user.repository';
 import { User } from '../../model/user.model';
 import { AuthService } from '../../model/auth.service';
+import Swal from 'sweetalert2'
 
 @Component({
-  templateUrl: './register.component.html'
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit
 {
@@ -26,8 +28,25 @@ export class RegisterComponent implements OnInit
     {
       this.repository.registerUser(this.user).subscribe(data => {
         if (data.success){
-          this.auth.storeUserData(data.token, data.user);
-          this.router.navigateByUrl('surveys/list');
+
+          Swal.fire({
+            title: 'Account created',
+            html: 'You will be redirected to sign in...',
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading()
+            },
+            willClose: () => {
+              this.router.navigateByUrl('/login');
+            }
+          }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              console.log('I was closed by the timer')
+            }
+          });
+
         }else{
           this.errorMessage = 'Error registering user.';
           console.log(data.error);
