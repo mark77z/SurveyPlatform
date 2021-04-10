@@ -31,7 +31,7 @@ export class RestDataSource
   constructor(private http: HttpClient, private jwtService: JwtHelperService)
   {
     //this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
-    this.baseUrl = `https://survey-platform-comp229.herokuapp.com/api/`
+    this.baseUrl = `https://final-survey-platform-comp229.herokuapp.com/api/`
   }
 
   getSurveys(): Observable<Survey[]>
@@ -141,7 +141,7 @@ export class RestDataSource
 
   storeUserData(token: any, user: User): void
   {
-    localStorage.setItem('id_token', 'Bearer ' + token);
+    localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
     this.authToken = token;
     this.user = user;
