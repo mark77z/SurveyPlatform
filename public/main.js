@@ -1986,6 +1986,9 @@ class StatsComponent {
         this.ageChartOptions = {
             responsive: true
         };
+    }
+    ;
+    ngOnInit() {
         const result = this.authService.authenticated;
         if (result) {
             this.user = JSON.parse(localStorage.getItem('user'));
@@ -1995,11 +1998,11 @@ class StatsComponent {
             if (this.surveyId != undefined) {
                 this.repository.getSurveyById(this.surveyId).subscribe(survey => {
                     this.survey = survey;
-                    repository.getSurveysAnsweredPerSurvey(this.surveyId).subscribe(data => {
+                    this.repository.getSurveysAnsweredPerSurvey(this.surveyId).subscribe(data => {
                         this.countAnsweredSurveys = data.count;
                         this.countAnsweredSurveysPercentaje = (data.count * 2) + "%";
                     });
-                    repository.getSurveysCorrectAnswersForSurvey(this.surveyId).subscribe(data => {
+                    this.repository.getSurveysCorrectAnswersForSurvey(this.surveyId).subscribe(data => {
                         this.totalGeneralCorrectAnswers = data.totalCorrect;
                         if (this.totalGeneralCorrectAnswers > 0) {
                             this.totalGeneralQuestions = this.countAnsweredSurveys * this.survey.questions.length;
@@ -2013,7 +2016,7 @@ class StatsComponent {
                             this.totalCorrectPercentajeStr = "0%";
                         }
                     });
-                    repository.getGenderStatsBySurvey(this.surveyId).subscribe(data => {
+                    this.repository.getGenderStatsBySurvey(this.surveyId).subscribe(data => {
                         var indexMale = data.result.findIndex(stat => stat._id === "male");
                         var indexFemale = data.result.findIndex(stat => stat._id === "female");
                         var valueMale = 0;
@@ -2026,7 +2029,7 @@ class StatsComponent {
                         }
                         this.genderChartDatasets = [{ data: [valueMale, valueFemale] }];
                     });
-                    repository.getAgeStatsBySurvey(this.surveyId).subscribe(data => {
+                    this.repository.getAgeStatsBySurvey(this.surveyId).subscribe(data => {
                         var indexunder18 = data.result.findIndex(stat => stat._id === "Under 18");
                         var index1825 = data.result.findIndex(stat => stat._id === "18-25");
                         var index2550 = data.result.findIndex(stat => stat._id === "25-50");
@@ -2052,24 +2055,24 @@ class StatsComponent {
                 });
             }
             else {
-                repository.getUserCreatedSurveys(this.user.username).subscribe(data => {
+                this.repository.getUserCreatedSurveys(this.user.username).subscribe(data => {
                     this.generatedSurveys = data.count;
                     this.generatedSurvesPercentaje = (data.count * 2) + "%";
                 });
-                repository.getUserCreatedSurveysAnswers(this.user.username).subscribe(data => {
+                this.repository.getUserCreatedSurveysAnswers(this.user.username).subscribe(data => {
                     this.countAnsweredSurveys = data.totalCount;
                     this.countAnsweredSurveysPercentaje = (data.totalCount * 2) + "%";
                 });
-                repository.getSurveysCorrectAnswersForCreator(this.user.username).subscribe(data => {
+                this.repository.getSurveysCorrectAnswersForCreator(this.user.username).subscribe(data => {
                     this.totalGeneralCorrectAnswers = data.totalCorrect;
                 });
-                repository.getSurveysTotalAnswersForCreator(this.user.username).subscribe(data => {
+                this.repository.getSurveysTotalAnswersForCreator(this.user.username).subscribe(data => {
                     this.totalGeneralQuestions = data.result[0].count;
                     this.totalCorrectPercentaje = this.totalGeneralCorrectAnswers * 100 / this.totalGeneralQuestions;
                     this.totalCorrectPercentaje = parseFloat(this.totalCorrectPercentaje.toFixed(2));
                     this.totalCorrectPercentajeStr = this.totalCorrectPercentaje + "%";
                 });
-                repository.getGeneralGenderStats(this.user.username).subscribe(data => {
+                this.repository.getGeneralGenderStats(this.user.username).subscribe(data => {
                     var indexMale = data.result.findIndex(stat => stat._id === "male");
                     var indexFemale = data.result.findIndex(stat => stat._id === "female");
                     var valueMale = 0;
@@ -2082,8 +2085,7 @@ class StatsComponent {
                     }
                     this.genderChartDatasets = [{ data: [valueMale, valueFemale] }];
                 });
-                repository.getGeneralAgeStats(this.user.username).subscribe(data => {
-                    console.log(data);
+                this.repository.getGeneralAgeStats(this.user.username).subscribe(data => {
                     var indexunder18 = data.result.findIndex(stat => stat._id === "Under 18");
                     var index1825 = data.result.findIndex(stat => stat._id === "18-25");
                     var index2550 = data.result.findIndex(stat => stat._id === "25-50");
@@ -2109,7 +2111,6 @@ class StatsComponent {
             }
         });
     }
-    ;
     exportGeneralStats() {
         var data = document.getElementById('stats-exportable');
         html2canvas__WEBPACK_IMPORTED_MODULE_3___default()(data, { scrollY: -window.scrollY }).then(function (canvas) {

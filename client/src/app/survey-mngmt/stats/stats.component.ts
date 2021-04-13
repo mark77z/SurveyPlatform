@@ -13,7 +13,7 @@ import html2canvas from 'html2canvas';
     templateUrl: './stats.component.html',
     styleUrls: ['./stats.component.css']
 })
-export class StatsComponent {
+export class StatsComponent implements OnInit{
 
     public user: User = new User();;
     public surveyId: string;
@@ -29,7 +29,9 @@ export class StatsComponent {
     public totalCorrectPercentajeStr: string;
     public totalCorrectPercentaje: number = 0;
 
-    constructor(private router: Router, private repository: SurveyRepository, private authService: AuthService, private route: ActivatedRoute) {
+    constructor(private router: Router, private repository: SurveyRepository, private authService: AuthService, private route: ActivatedRoute) { }
+
+    ngOnInit(): void {
         const result = this.authService.authenticated;
         if (result) {
             this.user = JSON.parse(localStorage.getItem('user'));
@@ -42,12 +44,12 @@ export class StatsComponent {
                 this.repository.getSurveyById(this.surveyId).subscribe(survey => {
                     this.survey = survey;
 
-                    repository.getSurveysAnsweredPerSurvey(this.surveyId).subscribe(data => {
+                    this.repository.getSurveysAnsweredPerSurvey(this.surveyId).subscribe(data => {
                         this.countAnsweredSurveys = data.count;
                         this.countAnsweredSurveysPercentaje = (data.count * 2) + "%";
                     });
 
-                    repository.getSurveysCorrectAnswersForSurvey(this.surveyId).subscribe(data => {
+                    this.repository.getSurveysCorrectAnswersForSurvey(this.surveyId).subscribe(data => {
                         this.totalGeneralCorrectAnswers = data.totalCorrect;
                         if (this.totalGeneralCorrectAnswers > 0) {
                             this.totalGeneralQuestions = this.countAnsweredSurveys * this.survey.questions.length;
@@ -61,7 +63,7 @@ export class StatsComponent {
                         }
                     });
 
-                    repository.getGenderStatsBySurvey(this.surveyId).subscribe(data => {
+                    this.repository.getGenderStatsBySurvey(this.surveyId).subscribe(data => {
                         var indexMale = data.result.findIndex(stat => stat._id === "male");
                         var indexFemale = data.result.findIndex(stat => stat._id === "female");
 
@@ -79,7 +81,7 @@ export class StatsComponent {
                         this.genderChartDatasets = [{ data: [valueMale, valueFemale] }];
                     });
 
-                    repository.getAgeStatsBySurvey(this.surveyId).subscribe(data => {
+                    this.repository.getAgeStatsBySurvey(this.surveyId).subscribe(data => {
                         var indexunder18 = data.result.findIndex(stat => stat._id === "Under 18");
                         var index1825 = data.result.findIndex(stat => stat._id === "18-25");
                         var index2550 = data.result.findIndex(stat => stat._id === "25-50");
@@ -110,28 +112,28 @@ export class StatsComponent {
                     });
                 });
             } else {
-                repository.getUserCreatedSurveys(this.user.username).subscribe(data => {
+                this.repository.getUserCreatedSurveys(this.user.username).subscribe(data => {
                     this.generatedSurveys = data.count;
                     this.generatedSurvesPercentaje = (data.count * 2) + "%";
                 });
 
-                repository.getUserCreatedSurveysAnswers(this.user.username).subscribe(data => {
+                this.repository.getUserCreatedSurveysAnswers(this.user.username).subscribe(data => {
                     this.countAnsweredSurveys = data.totalCount;
                     this.countAnsweredSurveysPercentaje = (data.totalCount * 2) + "%";
                 });
 
-                repository.getSurveysCorrectAnswersForCreator(this.user.username).subscribe(data => {
+                this.repository.getSurveysCorrectAnswersForCreator(this.user.username).subscribe(data => {
                     this.totalGeneralCorrectAnswers = data.totalCorrect;
                 });
 
-                repository.getSurveysTotalAnswersForCreator(this.user.username).subscribe(data => {
+                this.repository.getSurveysTotalAnswersForCreator(this.user.username).subscribe(data => {
                     this.totalGeneralQuestions = data.result[0].count;
                     this.totalCorrectPercentaje = this.totalGeneralCorrectAnswers * 100 / this.totalGeneralQuestions;
                     this.totalCorrectPercentaje = parseFloat(this.totalCorrectPercentaje.toFixed(2));
                     this.totalCorrectPercentajeStr = this.totalCorrectPercentaje + "%";
                 });
 
-                repository.getGeneralGenderStats(this.user.username).subscribe(data => {
+                this.repository.getGeneralGenderStats(this.user.username).subscribe(data => {
                     var indexMale = data.result.findIndex(stat => stat._id === "male");
                     var indexFemale = data.result.findIndex(stat => stat._id === "female");
 
@@ -149,8 +151,7 @@ export class StatsComponent {
                     this.genderChartDatasets = [{ data: [valueMale, valueFemale] }];
                 });
 
-                repository.getGeneralAgeStats(this.user.username).subscribe(data => {
-                    console.log(data);
+                this.repository.getGeneralAgeStats(this.user.username).subscribe(data => {
                     var indexunder18 = data.result.findIndex(stat => stat._id === "Under 18");
                     var index1825 = data.result.findIndex(stat => stat._id === "18-25");
                     var index2550 = data.result.findIndex(stat => stat._id === "25-50");
