@@ -1449,8 +1449,8 @@ class RestDataSource {
                 'Access-control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
             })
         };
-        this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
-        //this.baseUrl = `https://final-survey-platform-comp229.herokuapp.com/api/`
+        //this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
+        this.baseUrl = `https://final-survey-platform-comp229.herokuapp.com/api/`;
     }
     getSurveys() {
         return this.http.get(this.baseUrl + 'surveys/list');
