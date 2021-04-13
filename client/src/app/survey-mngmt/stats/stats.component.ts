@@ -7,13 +7,14 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/model/user.model';
 import * as jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import Swal from 'sweetalert2'
 
 @Component({
     selector: 'app-stats',
     templateUrl: './stats.component.html',
     styleUrls: ['./stats.component.css']
 })
-export class StatsComponent implements OnInit{
+export class StatsComponent implements OnInit {
 
     public user: User = new User();;
     public surveyId: string;
@@ -27,11 +28,30 @@ export class StatsComponent implements OnInit{
     public totalGeneralCorrectAnswers: number = 0;
     public totalGeneralQuestions: number = 0;
     public totalCorrectPercentajeStr: string;
-    public totalCorrectPercentaje: number = 0;
+    public totalCorrectPercentaje: number = 100;
 
     constructor(private router: Router, private repository: SurveyRepository, private authService: AuthService, private route: ActivatedRoute) { }
 
     ngOnInit(): void {
+
+        Swal.fire({
+            title: 'Survey Stats',
+            html: 'Loading statistics...',
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            willClose: () => {
+                //Do nothing
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }
+        });
+
         const result = this.authService.authenticated;
         if (result) {
             this.user = JSON.parse(localStorage.getItem('user'));
