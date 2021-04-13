@@ -11,17 +11,21 @@ import Swal from 'sweetalert2'
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.css']
 })
-export class AccountComponent {
+export class AccountComponent implements OnInit{
 
     public user: User;
     public errorMessage: string;
     public username: string;
 
-    constructor(private router: Router, private authService: AuthService, private repository: UserRepository) {
+    constructor(private router: Router, private authService: AuthService, private repository: UserRepository) {}
+
+    ngOnInit(): void {
         const result = this.authService.authenticated;
         if (result) {
             this.username = JSON.parse(localStorage.getItem('user')).username;
-            this.user = this.repository.getUserByUsername(this.username);
+            this.repository.getUserByUsername(this.username).subscribe(user => {
+                this.user = user;
+            });
         }
     }
 

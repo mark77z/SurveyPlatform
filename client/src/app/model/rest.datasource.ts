@@ -30,8 +30,8 @@ export class RestDataSource
 
   constructor(private http: HttpClient, private jwtService: JwtHelperService)
   {
-    //this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
-    this.baseUrl = `https://final-survey-platform-comp229.herokuapp.com/api/`
+    this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
+    //this.baseUrl = `https://final-survey-platform-comp229.herokuapp.com/api/`
   }
 
   getSurveys(): Observable<Survey[]>

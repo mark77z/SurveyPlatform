@@ -978,10 +978,14 @@ class AccountComponent {
         this.router = router;
         this.authService = authService;
         this.repository = repository;
+    }
+    ngOnInit() {
         const result = this.authService.authenticated;
         if (result) {
             this.username = JSON.parse(localStorage.getItem('user')).username;
-            this.user = this.repository.getUserByUsername(this.username);
+            this.repository.getUserByUsername(this.username).subscribe(user => {
+                this.user = user;
+            });
         }
     }
     updateProfile(form) {
@@ -1445,8 +1449,8 @@ class RestDataSource {
                 'Access-control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
             })
         };
-        //this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
-        this.baseUrl = `https://final-survey-platform-comp229.herokuapp.com/api/`;
+        this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
+        //this.baseUrl = `https://final-survey-platform-comp229.herokuapp.com/api/`
     }
     getSurveys() {
         return this.http.get(this.baseUrl + 'surveys/list');
@@ -1570,43 +1574,34 @@ RestDataSource.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineIn
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserRepository", function() { return UserRepository; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _user_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user.model */ "UbF0");
-/* harmony import */ var _rest_datasource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rest.datasource */ "DZdm");
-
+/* harmony import */ var _rest_datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rest.datasource */ "DZdm");
 
 
 
 class UserRepository {
     constructor(dataSource) {
         this.dataSource = dataSource;
-        this.user = new _user_model__WEBPACK_IMPORTED_MODULE_1__["User"]();
-        this.loaded = false;
+        this.users = [];
+        //TODO
     }
     registerUser(user) {
         return this.dataSource.registerUser(user);
     }
-    loadUserByUsername(username) {
-        this.loaded = true;
-        this.dataSource.getUserByUsername(username).subscribe(user => this.user = user);
-    }
     getUserByUsername(username) {
-        if (!this.loaded) {
-            this.loadUserByUsername(username);
-        }
-        return this.user;
+        return this.dataSource.getUserByUsername(username);
     }
     updateUser(username, user) {
         return this.dataSource.updateUser(username, user);
     }
 }
-UserRepository.ɵfac = function UserRepository_Factory(t) { return new (t || UserRepository)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_rest_datasource__WEBPACK_IMPORTED_MODULE_2__["RestDataSource"])); };
+UserRepository.ɵfac = function UserRepository_Factory(t) { return new (t || UserRepository)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_rest_datasource__WEBPACK_IMPORTED_MODULE_1__["RestDataSource"])); };
 UserRepository.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: UserRepository, factory: UserRepository.ɵfac, providedIn: 'root' });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](UserRepository, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root'
             }]
-    }], function () { return [{ type: _rest_datasource__WEBPACK_IMPORTED_MODULE_2__["RestDataSource"] }]; }, null); })();
+    }], function () { return [{ type: _rest_datasource__WEBPACK_IMPORTED_MODULE_1__["RestDataSource"] }]; }, null); })();
 
 
 /***/ }),
