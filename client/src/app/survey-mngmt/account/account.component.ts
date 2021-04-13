@@ -21,9 +21,7 @@ export class AccountComponent {
         const result = this.authService.authenticated;
         if (result) {
             this.username = JSON.parse(localStorage.getItem('user')).username;
-            this.repository.getUserByUsername(this.username).subscribe(user => {
-                this.user = user;
-            });
+            this.user = this.repository.getUserByUsername(this.username);
         }
     }
 

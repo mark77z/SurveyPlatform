@@ -981,9 +981,7 @@ class AccountComponent {
         const result = this.authService.authenticated;
         if (result) {
             this.username = JSON.parse(localStorage.getItem('user')).username;
-            this.repository.getUserByUsername(this.username).subscribe(user => {
-                this.user = user;
-            });
+            this.user = this.repository.getUserByUsername(this.username);
         }
     }
     updateProfile(form) {
@@ -1236,7 +1234,8 @@ __webpack_require__.r(__webpack_exports__);
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 const environment = {
-    production: false
+    production: false,
+    backendUrl: "http://localhost:4200/"
 };
 /*
  * For easier debugging in development mode, you can import the following file
@@ -1447,7 +1446,7 @@ class RestDataSource {
             })
         };
         //this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/api/`;
-        this.baseUrl = `https://survey-platform-comp229.herokuapp.com/api/`;
+        this.baseUrl = `https://final-survey-platform-comp229.herokuapp.com/api/`;
     }
     getSurveys() {
         return this.http.get(this.baseUrl + 'surveys/list');
@@ -1519,7 +1518,8 @@ class RestDataSource {
         return this.http.post(this.baseUrl + 'users/update/' + username, user, this.httpOptions);
     }
     storeUserData(token, user) {
-        localStorage.setItem('id_token', 'Bearer ' + token);
+        localStorage.setItem('id_token', token);
+        //localStorage.setItem('id_token', 'Bearer' + token);
         localStorage.setItem('user', JSON.stringify(user));
         this.authToken = token;
         this.user = user;
@@ -1570,34 +1570,43 @@ RestDataSource.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineIn
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserRepository", function() { return UserRepository; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
-/* harmony import */ var _rest_datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./rest.datasource */ "DZdm");
+/* harmony import */ var _user_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user.model */ "UbF0");
+/* harmony import */ var _rest_datasource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rest.datasource */ "DZdm");
+
 
 
 
 class UserRepository {
     constructor(dataSource) {
         this.dataSource = dataSource;
-        this.users = [];
-        //TODO
+        this.user = new _user_model__WEBPACK_IMPORTED_MODULE_1__["User"]();
+        this.loaded = false;
     }
     registerUser(user) {
         return this.dataSource.registerUser(user);
     }
+    loadUserByUsername(username) {
+        this.loaded = true;
+        this.dataSource.getUserByUsername(username).subscribe(user => this.user = user);
+    }
     getUserByUsername(username) {
-        return this.dataSource.getUserByUsername(username);
+        if (!this.loaded) {
+            this.loadUserByUsername(username);
+        }
+        return this.user;
     }
     updateUser(username, user) {
         return this.dataSource.updateUser(username, user);
     }
 }
-UserRepository.ɵfac = function UserRepository_Factory(t) { return new (t || UserRepository)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_rest_datasource__WEBPACK_IMPORTED_MODULE_1__["RestDataSource"])); };
+UserRepository.ɵfac = function UserRepository_Factory(t) { return new (t || UserRepository)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_rest_datasource__WEBPACK_IMPORTED_MODULE_2__["RestDataSource"])); };
 UserRepository.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: UserRepository, factory: UserRepository.ɵfac, providedIn: 'root' });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](UserRepository, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root'
             }]
-    }], function () { return [{ type: _rest_datasource__WEBPACK_IMPORTED_MODULE_1__["RestDataSource"] }]; }, null); })();
+    }], function () { return [{ type: _rest_datasource__WEBPACK_IMPORTED_MODULE_2__["RestDataSource"] }]; }, null); })();
 
 
 /***/ }),

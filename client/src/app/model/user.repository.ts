@@ -8,22 +8,33 @@ import { RestDataSource } from './rest.datasource';
 })
 export class UserRepository
 {
-  private users: User[] = [];
+  private user: User = new User();
+  private loaded = false;
 
-  constructor(private dataSource: RestDataSource)
-  {
-    //TODO
-  }
+  constructor(private dataSource: RestDataSource){}
 
   registerUser(user: User): Observable<any>
   {
     return this.dataSource.registerUser(user);
   }
 
-  getUserByUsername(username: string): Observable<User>
+  loadUserByUsername(username: string): void
   {
-    return this.dataSource.getUserByUsername(username);
+    this.loaded = true;
+    this.dataSource.getUserByUsername(username).subscribe(user=> this.user = user);
   }
+
+
+  getUserByUsername(username: string): User
+  {
+    if(!this.loaded)
+    {
+      this.loadUserByUsername(username);
+    }
+
+    return this.user;
+  }
+
 
   updateUser(username: string, user: User): Observable<any>
   {
